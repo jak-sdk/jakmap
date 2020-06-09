@@ -1,0 +1,30 @@
+# I am config
+
+# possible styles:
+# fail2ban: read-only static-conf with writeable override file your-conf
+# conf.d with sensible defaults
+# big unwieldly main.conf
+
+
+JSON_INDENT=2
+
+DB_BACKEND='mysql'
+
+MYSQL_HOSTNAME='localhost'
+MYSQL_PORT='3306'
+MYSQL_USERNAME='jakmap'
+MYSQL_PASSWORD='changeme'
+MYSQL_SCHEMA='jakmap'
+
+MAXSIZEUPLOAD=50000000
+MAXCONCURRENTUPLOAD=8
+MAXSIZEREQUEST=10000000
+MAXCONCURRENTREQUESTS=8
+MAXCALLSINREQUEST=32
+MAXOBJECTSINGET=256
+MAXOBJECTSINSET=128
+
+APIURL=""
+DOWNLOADURL=""
+UPLOADURL=""
+EVENTSOURCEURL=""
