@@ -1,0 +1,12 @@
+This is an assortment of 'helper' code.
+
+Helper code is code that I didn't want to become boilerplate, so instead DRY it here.
+These are global functions with no specific context.
+
+Please treat anything being in this directory as a communication, from me to you, 
+that I'm not particularly happy with it, but it was functionality that 
+I needed at the time, so "just got it working" in here.
+
+Nearly anything and everything in this directory is likely better implemented in a more structured, more extensible or more replaceable (deleteable) way, in some other directory.
+
+examples at the time of writig this include output formatting and conditional logging.

@@ -1,0 +1,9 @@
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     --user test:test \
+     -d '{
+       "using": [ "urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail" ],
+       "methodCalls": [[ "Mailbox/get", {}, "c1" ]]
+     }' \
+     http://localhost/jmap/

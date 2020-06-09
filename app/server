@@ -1,0 +1,2 @@
+#I'm a bash script to jumpstart the flask app on a local machine
+export FLASK_APP=main.py && pipenv run python  -m flask run --host=0.0.0.0

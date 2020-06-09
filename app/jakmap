@@ -1,0 +1,10 @@
+#!/bin/bash
+# this is the interface to the cli command
+# either call methods in the cli interface
+# or start the Python REPL
+if [ "$1" == "interactive" ]; then
+  pipenv run python -i _jakmap.py
+else 
+  pipenv run python _jakmap.py $@
+fi
+
