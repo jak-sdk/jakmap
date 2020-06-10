@@ -9,4 +9,4 @@ I needed at the time, so "just got it working" in here.
 
 Nearly anything and everything in this directory is likely better implemented in a more structured, more extensible or more replaceable (deleteable) way, in some other directory.
 
-examples at the time of writig this include output formatting and conditional logging.
+examples at the time of writing this include output formatting and conditional logging.

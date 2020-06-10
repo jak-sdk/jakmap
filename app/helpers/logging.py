@@ -3,4 +3,4 @@ from main import GLOBAL
 
 def dprint(input):
     if GLOBAL['app'].config['DEBUG']:
-        print("DEBUG:" + input)
+        print("DEBUG:" + str(input))
