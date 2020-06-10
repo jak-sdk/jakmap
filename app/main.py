@@ -1,4 +1,4 @@
-import _jakmap
+#import _jakmap
 from flask import Flask,request,render_template,send_from_directory,g,abort
 from classes import *
 from _db import init_db
@@ -48,16 +48,17 @@ def get_session_resource():
         jmap_request = request.get_json(silent=True)
         if jmap_request is None:
             dprint("aborting 400 - invalid JSON")
-            abort(400)
+            raise InvalidJSON() 
         return jdump(JMAP.process(jmap_request))
 
-@app.route('/foo')
-def foo():
-    return app.config
+#@app.route('/foo')
+#def foo():
+#    return str(app.config)
 
-@app.errorhandler(400)
-def invalid(e):
-    return INVALID_JSON, 400
+# invalidjson, unknowncapability etc
+@app.errorhandler(JakmapException)
+def errorhandler(e):
+    return e.message, e.status_code
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=80)

@@ -6,18 +6,27 @@ from helpers import *
 # calling all the methods
 # and aggregating the results
 class JMAP:
-    _JMAPMethods = {}
+    _JMAPMethods = dict()
+    _JMAPCaps    = set()
 
     @property 
     def Methods(self):
         return type(self)._JMAPMethods
 
+    @property 
+    def Caps(self):
+        return type(self)._JMAPCaps
+
     @classmethod
     def process(cls, request):
         # housekeeping
         #   check capabilities
+        for cap in request['using']:
+            if cap not in cls._JMAPCaps:
+                raise UnknownCapability()
 
         dprint(str(request))
+
         
         # meat of the method
         method_call_responses = []
@@ -62,6 +71,7 @@ class JMAP:
             cls._JMAPMethods[MethodName]  = {}
             cls._JMAPMethods[MethodName]['method']  = func
             cls._JMAPMethods[MethodName]['capName'] = capName
+            cls._JMAPCaps.add(capName)
             dprint("registering " + MethodName + " under " + capName)
             return func
             

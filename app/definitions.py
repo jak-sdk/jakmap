@@ -7,3 +7,9 @@ INVALID_JSON = '''{
   "status": 400,
   "detail": "The content type of the request was not application/json or the request did not parse as I-JSON."
 }'''
+
+UNKNOWN_CAPABILITY= '''{
+  "type": "urn:ietf:params:jmap:error:unknownCapability",
+  "status": 400,
+  "detail": "The client included a capability in the “using” property of the request that the server does not support."
+}'''

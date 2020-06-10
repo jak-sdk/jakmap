@@ -1,0 +1,14 @@
+curl -X POST  \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     --user test:test \
+     -d '{
+       "using": [ "urn:ietf:params:jmap:core", "urn:ietf:params:jmap:bad-cap" ],
+       "methodCalls": [
+         [ "Mailbox/get", {
+           "arg1": "arg1data",
+           "arg2": "arg2data"
+         }, "c1" ]
+       ]
+     }' \
+     http://localhost:5000/.well-known/jmap
