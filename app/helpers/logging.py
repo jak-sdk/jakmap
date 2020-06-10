@@ -1,5 +1,6 @@
 from flask import current_app, g
+from main import GLOBAL
 
-def dlog(input):
-    if g.debug:
-        print(input)
+def dprint(input):
+    if GLOBAL['app'].config['DEBUG']:
+        print("DEBUG:" + input)
