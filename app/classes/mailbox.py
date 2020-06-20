@@ -6,6 +6,7 @@ from flask import current_app, g
 class Mailbox:
     
     mailbox_id = None
+    account_id = None
     name = None
     parent_id = None
     role = None
@@ -17,14 +18,19 @@ class Mailbox:
     my_rights = None # MailboxRights class
     is_subscribed = None
 
+    @JMAP.abstract
+    def loadById(self, Id):
+        pass
 
     @JMAP.registerMethodAs("Mailbox/get", CAP_MAIL)
     def get(args, methodcallid):
+        mailboxes = [Mailbox.loadById(Id) for Id in args['ids'] if g.user.canViewMailbox(Id)]
+
         response = {}
         response['accountId'] = args['accountId']
         response['state'] = '123'
-        response['list'] = []
-        response['notFound'] = []
+        response['list'] = [mailbox.toList() for mailbox in mailboxes]
+        response['notFound'] = [Id for Id in args['ids'] if Id not in [MB['id'] for MB in response['list']] ]
         # if len(args['ids']) > 1000?:
         #  return requestTooLarge
         return response

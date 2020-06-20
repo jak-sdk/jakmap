@@ -14,3 +14,9 @@ UNKNOWN_CAPABILITY= '''{
   "status": 400,
   "detail": "The client included a capability in the “using” property of the request that the server does not support."
 }'''
+
+SERVER_IMPLEMENTATION_ERROR= '''{
+  "type": "urn:ietf:params:jmap:error:badImplementation",
+  "status": 500,
+  "detail": "This server has not implemented a method that this request depends on. Send dissapointed emails to the administrators."
+}'''

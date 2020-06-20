@@ -1,4 +1,4 @@
-curl -X POST  \
+curl  -X POST  \
      -H "Content-Type: application/json" \
      -H "Accept: application/json" \
      --user test:test \
@@ -6,8 +6,8 @@ curl -X POST  \
        "using": [ "urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail" ],
        "methodCalls": [
          [ "Mailbox/get", {
-           "arg1": "arg1data",
-           "arg2": "arg2data"
+           "accountId": "1",
+           "ids": [1,2,3]
          }, "c1" ],
          [ "method3", {}, "c3" ]
        ]

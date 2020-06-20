@@ -6,15 +6,12 @@ from helpers import *
 import json
 from definitions import *
 
-# yuck
-GLOBAL = {}
-
 app = Flask(__name__)
 
 #app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config.from_pyfile('config')
 
-GLOBAL['app'] = app
+
 
 @app.before_request
 def before_request():

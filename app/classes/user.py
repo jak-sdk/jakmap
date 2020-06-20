@@ -1,30 +1,22 @@
-
+from .jmap import JMAP
 
 class User(object):
-    username = "fooname"
+    username = None
 
+    @JMAP.abstract
     def get_accounts(self):
-        output = {
-          "A13824": {
-            "name": "john@example.com",
-            "isPersonal": True,
-            "isReadOnly": False,
-            "accountCapabilities": {
-              "urn:ietf:params:jmap:mail": {
-                "maxMailboxesPerEmail": None,
-                "maxMailboxDepth": 10
-              },
-              "urn:ietf:params:jmap:contacts": {
-                "foobar": None,
-              }
-            }
-          }
-        }
-        return output
+        pass
 
+    @JMAP.abstract
     def get_primary_accounts(self):
-        output = {
-          "urn:ietf:params:jmap:mail": "A13824",
-          "urn:ietf:params:jmap:contacts": "A13824"
-        }
-        return output
+        pass
+
+    @JMAP.abstract
+    def canViewMailbox(self, Id):
+        pass
+        # return self.canViewAccount(Mailbox.account)
+
+    @JMAP.abstract
+    def canViewAccount(self, Id):
+        pass
+        #return exists(user__account)

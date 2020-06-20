@@ -25,3 +25,7 @@ class InvalidJSON(JakmapException):
 class UnknownCapability(JakmapException):
     status_code = 400
     message = UNKNOWN_CAPABILITY
+
+class AbstractMethodCalled(JakmapException):
+    status_code = 500
+    message = SERVER_IMPLEMENTATION_ERROR

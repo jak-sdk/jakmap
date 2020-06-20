@@ -94,6 +94,13 @@ class JMAP:
         return register
 
     @classmethod
+    def abstract(cls, func):
+        def newfunc(*args, **kwargs):
+            dprint("About to oops, we called abstract method " + func.__name__)
+            raise AbstractMethodCalled()
+        return newfunc
+
+    @classmethod
     def sessionState(cls):
         return "abcdef123456"
 
