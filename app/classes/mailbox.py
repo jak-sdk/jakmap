@@ -20,8 +20,14 @@ class Mailbox:
 
     @JMAP.registerMethodAs("Mailbox/get", CAP_MAIL)
     def get(args, methodcallid):
-        print("mailbox :)")
-        return args
+        response = {}
+        response['accountId'] = args['accountId']
+        response['state'] = '123'
+        response['list'] = []
+        response['notFound'] = []
+        # if len(args['ids']) > 1000?:
+        #  return requestTooLarge
+        return response
 
     @JMAP.registerMethodAs("Mailbox/set", CAP_MAIL)
     def set(args, methodcallid):

@@ -1,13 +1,14 @@
 import functools
 from flask import current_app, g
 from helpers import *
+from .result_reference import ResultReference
 
 # a messy class to handle pulling apart the request
 # calling all the methods
 # and aggregating the results
 class JMAP:
-    _JMAPMethods = dict()
-    _JMAPCaps    = set()
+    _JMAPMethods     = dict()
+    _JMAPCaps        = set()
 
     @property 
     def Methods(self):
@@ -25,7 +26,7 @@ class JMAP:
             if cap not in cls._JMAPCaps:
                 raise UnknownCapability()
 
-        dprint(str(request))
+        #dprint(str(request))
 
         #check type signature
         
@@ -38,12 +39,19 @@ class JMAP:
             #methodnames object/method -> object.method
             if methodname in cls._JMAPMethods:
                 dprint(methodname + "exists, calling " + str(cls._JMAPMethods[methodname]['method']))
+
+                for k in [_k for _k in args.keys() if _k[0] == '#']:
+                  try:
+                    resultReference = ResultReference(args[k]['resultOf'], args[k]['name'],args[k]['path'])
+                    args[k.strip("#")] = JMAP.findResultIn(resultReference, method_call_responses)
+                  except:
+                    #invalid reference
+                    pass
                 
-                # part of spec, 
                 # a method can respond with multiple responses
                 # and it is the callid that ids these, not the methodname
                 method_responses = cls._JMAPMethods[methodname]['method'](args, methodcallid)
-                #NOTSPEC
+
                 # we may need to allow a method to call another method, and this would
                 # add two entries to method_call_responses with the same methodcallid
                 for mr in method_responses:
@@ -69,19 +77,30 @@ class JMAP:
     def registerMethodAs(cls, MethodName, capName):
         # this 'injects' the MethodName into the decorator 
         def register(func):
+            @functools.wraps(func)
+            def newfunc(*args, **kwargs):
+                output = func(*args, **kwargs)
+                return output
+
             # put in globals
             cls._JMAPMethods[MethodName]  = {}
-            cls._JMAPMethods[MethodName]['method']  = func
+            cls._JMAPMethods[MethodName]['method']  = newfunc
             cls._JMAPMethods[MethodName]['capName'] = capName
             cls._JMAPCaps.add(capName)
             dprint("registering " + MethodName + " under " + capName)
-            return func
+
+            return newfunc
             
         return register
 
     @classmethod
     def sessionState(cls):
         return "abcdef123456"
+
+    @classmethod
+    def getPreviousResult(cls, resultReference):
+        # this f finds a previous result based on the passed in ResultReference
+        pass
 
     @classmethod
     def sessionResource(cls):

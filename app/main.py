@@ -22,19 +22,6 @@ def before_request():
     #check or setup auth here?
     g.user = User()
 
-#@app.route('/css/<path:path>')
-#def send_css(path):
-#    return send_from_directory('static/css', path)
-#@app.route('/js/<path:path>')
-#def send_js(path):
-#    return send_from_directory('static/js', path)
-#@app.route('/icons/<path:path>')
-#def send_icons(path):
-#    return send_from_directory('static/icons', path)
-#@app.route('/img/<path:path>')
-#def send_img(path):
-#    return send_from_directory('static/img', path)
-
 @app.route('/')
 def hello_world():
     return render_template('home.html')
@@ -50,10 +37,6 @@ def get_session_resource():
             dprint("aborting 400 - invalid JSON")
             raise InvalidJSON() 
         return jdump(JMAP.process(jmap_request))
-
-#@app.route('/foo')
-#def foo():
-#    return str(app.config)
 
 # invalidjson, unknowncapability etc
 @app.errorhandler(JakmapException)
