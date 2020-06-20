@@ -27,6 +27,7 @@ class JMAP:
 
         dprint(str(request))
 
+        #check type signature
         
         # meat of the method
         method_call_responses = []
@@ -60,6 +61,7 @@ class JMAP:
         
         response = {}
         response['methodResponses']  = method_call_responses
+        response['sessionState'] = cls.sessionState()
 
         return response
 
@@ -77,4 +79,49 @@ class JMAP:
             
         return register
 
+    @classmethod
+    def sessionState(cls):
+        return "abcdef123456"
+
+    @classmethod
+    def sessionResource(cls):
+        config = current_app.config
+        output = {}
+
+        #get capabilities
+        core = {}
+        core["maxSizeUpload"] = config['MAXSIZEUPLOAD']
+        core["maxConcurrentUpload"] = config['MAXCONCURRENTUPLOAD']
+        core["maxSizeRequest"] = config['MAXSIZEREQUEST']
+        core["maxConcurrentRequests"] = config['MAXCONCURRENTREQUESTS']
+        core["maxCallsInRequest"] = config['MAXCALLSINREQUEST']
+        core["maxObjectsInGet"] = config['MAXOBJECTSINGET']
+        core["maxObjectsInSet"] = config['MAXOBJECTSINSET']
+        core["collationAlgorithms"] = [
+          "i;ascii-numeric",
+          "i;ascii-casemap",
+          "i;unicode-casemap"
+        ]
+
+        # is this account based? Do we use what's registered in JMAP?
+        output['capabilities'] = {}
+        output['capabilities']['urn:ietf:params:jmap:core'] = core
+
+        # for now, offer all JMAP Caps, in future, we can restrict certain accounts
+        # for cap in g.user.allowedCaps:
+        for cap in JMAP.Caps:
+            output['capabilities'][cap] = {}
+
+        #get accounts
+        output['accounts'] = g.user.get_accounts()
+        output['primaryAccounts'] = g.user.get_primary_accounts()
+        output['username'] = g.user.username
+        output['apiUrl'] = config['APIURL']
+        output['downloadUrl'] = config['DOWNLOADURL']
+        output['uploadUrl'] = config['UPLOADURL']
+        output['eventSourceUrl'] = config['EVENTSOURCEURL']
+        state = sha256(json.dumps(output).encode('utf-8')).hexdigest()
+        output['state'] = state
+
+        return output
             

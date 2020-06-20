@@ -2,6 +2,7 @@ CAP_CORE     = "urn:ietf:params:jmap:core"
 CAP_MAIL     = "urn:ietf:params:jmap:mail"
 CAP_CONTACTS = "urn:ietf:params:jmap:contacts"
 
+# these probably shouldn't be here
 INVALID_JSON = '''{
   "type": "urn:ietf:params:jmap:error:notJSON",
   "status": 400,

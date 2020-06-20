@@ -43,7 +43,7 @@ def hello_world():
 def get_session_resource():
     # are they authenticated?
     if request.method == "GET":
-        return jdump(session_resource())
+        return jdump(JMAP.sessionResource())
     else:
         jmap_request = request.get_json(silent=True)
         if jmap_request is None:
