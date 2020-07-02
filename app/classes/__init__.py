@@ -18,19 +18,20 @@ from importlib import import_module
 #  2. delete all of this and use a better way, possibly at application construction
 #
 def load(classes, overload_dir=None):
-    for k,v in classes.items():
-        mod  = import_module("classes."+k)
-        cls = getattr(mod, v)
+    for filename,classname in classes.items():
+        mod  = import_module("classes."+filename)
+        cls = getattr(mod, classname)
     
         if overload_dir:
-            ovmod = import_module("classes.backends."+overload_dir+"."+k)
-            ovcls = getattr(ovmod, v)
-            globals()[v] = type(v, (ovcls, cls), {})
+            ovmod = import_module("classes.backends."+overload_dir+"."+filename)
+            ovcls = getattr(ovmod, classname)
+            globals()[classname] = type(classname, (ovcls, cls), {})
         else:
-            globals()[v] = cls
+            globals()[classname] = cls
     
 
 
+#        <filename>        <classname>
 cs = {'session_resource':'SessionResource',
       'jmap':'JMAP',
       'core':'Core',

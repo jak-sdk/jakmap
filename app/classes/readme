@@ -11,3 +11,5 @@ e.g. backend/mysql/user,mailbox
 backends are shadows of these files that actually know how to interface with reality
 
 code in this directory should not know about reality.
+
+(See comments at top of __init__.py about how we collide reality with spec)
