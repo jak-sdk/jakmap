@@ -1,9 +1,17 @@
-from _db import dbs
 from sqlalchemy.ext.declarative import declarative_base
+from flask import current_app,g
 import json
 
 class Base(object):
-    db = dbs['jakmap']
+    #db = dbs['jakmap']
+
+    @property
+    def db():
+        return g['dbs']['jakmap']
+
+    @classmethod
+    def _db():
+        return g['dbs']['jakmap']
 
     def save(self):
         self.db.session.add(self)
@@ -11,12 +19,12 @@ class Base(object):
 
     @classmethod
     def load(cls, id):
-        obj = cls.db.session.query(cls).filter(cls.__mapper__.primary_key[0] == id).first()
+        obj = cls._db().session.query(cls).filter(cls.__mapper__.primary_key[0] == id).first()
         return obj
 
     @classmethod
     def load_by_name(cls, name):
-        obj = cls.db.session.query(cls).filter(cls.name == name).first()
+        obj = cls._db().session.query(cls).filter(cls.name == name).first()
         return obj
 
     @classmethod
@@ -47,7 +55,7 @@ class Base(object):
 
     @classmethod
     def all(cls): 
-        obj_array = cls.db.session.query(cls).all() 
+        obj_array = cls._db().session.query(cls).all() 
         return obj_array
 
 Base = declarative_base(cls=Base)

@@ -18,5 +18,5 @@ UNKNOWN_CAPABILITY= '''{
 SERVER_IMPLEMENTATION_ERROR= '''{
   "type": "urn:ietf:params:jmap:error:badImplementation",
   "status": 500,
-  "detail": "This server has not implemented a method that this request depends on. Send dissapointed emails to the administrators."
+  "detail": "This server has not implemented a method that this request depends on. Please email the administrators expressing your dissapointment."
 }'''

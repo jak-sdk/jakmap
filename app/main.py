@@ -11,7 +11,7 @@ app = Flask(__name__)
 #app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config.from_pyfile('config')
 
-
+app.config['DEFAULT_BACKEND']
 
 @app.before_request
 def before_request():

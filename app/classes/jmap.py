@@ -96,7 +96,7 @@ class JMAP:
     @classmethod
     def abstract(cls, func):
         def newfunc(*args, **kwargs):
-            dprint("About to oops, we called abstract method " + func.__name__)
+            eprint("About to oops, we called abstract method " + func.__name__)
             raise AbstractMethodCalled()
         return newfunc
 
