@@ -1,7 +1,7 @@
 class ResultReference:
-    resultOf = None 
-    name = None
-    path = None
+    #resultOf = None 
+    #name = None
+    #path = None
     
     def __init__(self, method_call_id, name, path):
         self.resultOf = method_call_id

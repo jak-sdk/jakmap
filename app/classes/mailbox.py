@@ -28,10 +28,6 @@ class Mailbox(Base):
     account_id = None
     sort_order = None
 
-    @JMAP.abstract
-    def loadById(self, Id):
-        pass
-
     @JMAP.registerMethodAs("Mailbox/get", CAP_MAIL)
     def get(args, methodcallid):
         mailboxes = [Mailbox.loadById(Id) for Id in args['ids'] if g.user.canViewMailbox(Id)]
@@ -46,7 +42,7 @@ class Mailbox(Base):
         # todo implement requestTooLarge
         # if len(args['ids']) > 1000?:
         #  return requestTooLarge
-        return response
+        return [response]
 
     @JMAP.registerMethodAs("Mailbox/set", CAP_MAIL)
     def set(args, methodcallid):
@@ -62,7 +58,7 @@ class Mailbox(Base):
             pass
 
         if stateMismatch:
-            # response = stateMismatch
+            # todo response = stateMismatch
             pass
         else:
             for i,obj in args['create']:
@@ -79,9 +75,9 @@ class Mailbox(Base):
                 # destroy obj with temp-id i
                 m = Mailbox.load(i)
                 if m.hasChild(): #todo
-                    pass #return mailboxHasChild
+                    pass #todo return mailboxHasChild
                 else if m.mailboxHasEmail() and !args['onDestroyRemoveEmails']:
-                    pass #return m.mailboxHasEmail
+                    pass #todo return m.mailboxHasEmail
                 else:
                     m.destroy()
 
@@ -90,11 +86,12 @@ class Mailbox(Base):
 
     @JMAP.registerMethodAs("Mailbox/changes", CAP_MAIL)
     def changes(args, methodcallid):
-        # assert maxChanges is +int
+        # todo assert maxChanges is +int
 
+        # todo what mailbox?
         changes = Mailbox.getChangesSince(args['sinceState'])
 
-        # respond cannotCalculateChanges if ..
+        # todo respond cannotCalculateChanges if ..
 
         response = {}
         response['accountId'] = args['accountId']
@@ -104,7 +101,7 @@ class Mailbox(Base):
         response['created'] = [change['id'] for change in changes if change['created']]
         response['updated'] = [change['id'] for change in changes if change['updated']]
         response['destroyed'] = [change['id'] for change in changes if change['destroyed']]
-        return args
+        return [response]
 
     @JMAP.registerMethodAs("Mailbox/query", CAP_MAIL)
     def query(args, methodcallid):
@@ -112,18 +109,23 @@ class Mailbox(Base):
         filt = Filter(args['filter'], self.filterableConditions)
         mbs = Mailbox.filter(filt)
         sort = Sort(args['sort'])
-        # FilterCondition class
-        return args
+        return sort.applyTo(mbs) # todo data format for query
 
     @JMAP.registerMethodAs("Mailbox/queryChanges", CAP_MAIL)
     def queryChanges(args, methodcallid):
-        print("mailbox :)")
-        return args
+        # todo queryChanges, stop being lazy with cannotCalculateChanges
+        # for now, cannotCalculateChanges
+        response = {'type': 'cannotCalculateChanges'}
+        return [response]
 
     @classmethod
     def state(cls):
         # https://jmap.io/server.html#algorithms
         return cls.highModSeqMailbox()
+
+    
+    ###########
+    # Abstracts
 
     @JMAP.abstract
     @classmethod

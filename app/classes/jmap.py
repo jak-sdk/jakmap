@@ -40,6 +40,7 @@ class JMAP:
             if methodname in cls._JMAPMethods:
                 dprint(methodname + "exists, calling " + str(cls._JMAPMethods[methodname]['method']))
 
+                # handle backreferences
                 for k in [_k for _k in args.keys() if _k[0] == '#']:
                   try:
                     resultReference = ResultReference(args[k]['resultOf'], args[k]['name'],args[k]['path'])
@@ -55,11 +56,16 @@ class JMAP:
                 # we may need to allow a method to call another method, and this would
                 # add two entries to method_call_responses with the same methodcallid
                 for mr in method_responses:
-                    method_call_responses.append([
-                        methodname,
-                        mr,
-                        methodcallid
-                    ])
+                    if type(mr) == dict and mr.keys() == ['type']:
+                        method_call_responses.append(['error', mr, 'methodcallid']
+                    else:
+                        method_call_responses.append(mr)
+
+                    #method_call_responses.append([
+                    #    methodname,
+                    #    mr,
+                    #    methodcallid
+                    #])
             else:
                 method_call_responses.append([
                     "error",
