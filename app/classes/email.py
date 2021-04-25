@@ -1,6 +1,7 @@
 from .jmap import JMAP
 from definitions import *
 from flask import current_app, g
+import email
 
 
 class Email:
@@ -9,12 +10,48 @@ class Email:
     email_id = None
     blob_id = None
     thread_id = None
-    mailbox_ids = None
-    keywords = None
-    size = None
-    received_at = None
     
-    #header fields
+    @property
+    def mailboxIds(self):
+        # weird format https://jmap.io/spec-mail.html#properties-of-the-email-object
+        #{'1':True,'3':True}
+        ret = {}
+        for m in self.mailboxes():
+            ret[m.mailboxId] = True
+        return ret
+
+    @property
+    def keywords(self):
+        return {
+            '$draft': self.isDraft,
+            '$seen': self.isSeen,
+            '$flagged': self.isFlagged,
+            '$answered': self.isAnswered
+            #todo custom keywords
+        }
+
+    @property
+    def size(self):
+        #todo
+        #return self.size
+        pass
+
+    @property
+    def receivedAt(self):
+        #todo
+        #return self.receivedAt
+        pass
+    
+    @property
+    def headers(self):
+        #todo get all headers
+        pass
+
+    def getHeader(self, name, headerForm=None, allInstances=False):
+        #todo get specific header
+        pass
+    
+
     raw = None
     text = None
     addresses = None # EmailAddress class
@@ -23,11 +60,37 @@ class Email:
     date = None
     urls = None
 
-    #lower level
-    headers = None # EmailHeader class
+    convenienceProperties = {
+        'messageId' : 'header:Message-ID:asMessageIds',
+        'inReplyTo' : 'header:In-Reply-To:asMessageIds',
+        'references' : 'header:References:asMessageIds',
+        'sender' : 'header:Sender:asAddresses',
+        'from' : 'header:From:asAddresses',
+        'to' : 'header:To:asAddresses',
+        'cc' : 'header:Cc:asAddresses',
+        'bcc' : 'header:Bcc:asAddresses',
+        'replyTo' : 'header:Reply-To:asAddresses',
+        'subject' : 'header:Subject:asText',
+        'sentAt' : 'header:Date:asDate'
+    }
+    # We want the above as properties for sake of convenience
+    # this code generates them in the form:
+    # @property
+    # def messageId(self):
+    #     return self.getHeaderByLongName('header:Message-ID:asMessageIds')
+    for k,v in convenienceProperties.items():
+        def __f(a):
+            return lambda self : self.getHeaderByLongName(a)
+        vars()[k] = property(__f(v))
+    del k,v,__f
 
-    # convenience
-    message_id = None
+    def getHeaderByLongName(self, header):
+        hsplit = header.split(":")
+        #todo hsplit[2] == asBlahBlah
+        #todo check hsplit[0] == header
+        #call getHeader(hsplit[1], asBlahBlah
+        pass
+    
     in_reply_to = None
     references = None
     sender = None
@@ -41,6 +104,7 @@ class Email:
 
     # body parts
     # EmailBodyPart class
+    emailBodyParts = None # todo in backend sqlalchemy relationship?
     part_id = None
     blob_id = None
     size = None

@@ -23,7 +23,21 @@ class Thread:
 
     @JMAP.registerMethodAs("Thread/changes", CAP_MAIL)
     def changes(args, methodcallid):
-        print("Thread :)")
-        return args
+        # todo assert maxChanges is +int
+
+        # todo what mailbox?
+        changes = Thread.getChangesSince(args['sinceState'])
+
+        # todo respond cannotCalculateChanges if ..
+
+        response = {}
+        response['accountId'] = args['accountId']
+        response['oldState'] = args['sinceState']
+        response['newState'] = max([change['state'] for change in changes])
+        response['hasMoreChanges'] = (args['maxChanges'] < len(changes))
+        response['created'] = [change['id'] for change in changes if change['created']]
+        response['updated'] = [change['id'] for change in changes if change['updated']]
+        response['destroyed'] = [change['id'] for change in changes if change['destroyed']]
+        return [response]
 
 

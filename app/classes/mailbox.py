@@ -132,4 +132,8 @@ class Mailbox(Base):
     def highModSeqMailbox(cls):
         pass
 
+    @JMAP.abstract
+    def getChangesSince(self, state):
+        pass
+
 
