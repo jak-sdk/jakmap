@@ -1,3 +1,5 @@
+from .jmap import JMAP
+
 class Base:
     # weird territory here, semi abstract base class that gets overridden later..?
 

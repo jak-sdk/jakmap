@@ -38,7 +38,7 @@ class JMAP:
             methodcallid = i[2]
             #methodnames object/method -> object.method
             if methodname in cls._JMAPMethods:
-                dprint(methodname + "exists, calling " + str(cls._JMAPMethods[methodname]['method']))
+                dprint(methodname + " exists, calling " + str(cls._JMAPMethods[methodname]['method']))
 
                 # handle backreferences
                 for k in [_k for _k in args.keys() if _k[0] == '#']:
@@ -57,7 +57,7 @@ class JMAP:
                 # add two entries to method_call_responses with the same methodcallid
                 for mr in method_responses:
                     if type(mr) == dict and mr.keys() == ['type']:
-                        method_call_responses.append(['error', mr, 'methodcallid']
+                        method_call_responses.append(['error', mr, 'methodcallid'])
                     else:
                         method_call_responses.append(mr)
 
