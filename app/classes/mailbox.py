@@ -76,7 +76,7 @@ class Mailbox(Base):
                 m = Mailbox.load(i)
                 if m.hasChild(): #todo
                     pass #todo return mailboxHasChild
-                else if m.mailboxHasEmail() and !args['onDestroyRemoveEmails']:
+                elif m.mailboxHasEmail() and not args['onDestroyRemoveEmails']:
                     pass #todo return m.mailboxHasEmail
                 else:
                     m.destroy()
